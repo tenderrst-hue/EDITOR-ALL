@@ -1,0 +1,51 @@
+name: Build EDITOR ALL
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "sdk/mods/editor-all/**"
+      - ".github/workflows/build-editor-all.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout EDITOR ALL
+        uses: actions/checkout@v4
+        with:
+          path: project
+
+      - name: Checkout Bearite SDK
+        uses: actions/checkout@v4
+        with:
+          repository: Sp1KLe/Bearite
+          ref: main
+          path: bearite
+
+      - name: Install Android NDK
+        run: |
+          SDKM="$(ls "$ANDROID_HOME"/cmdline-tools/*/bin/sdkmanager | head -n 1)"
+          yes | "$SDKM" --licenses > /dev/null || true
+          "$SDKM" "ndk;26.1.10909125"
+          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/26.1.10909125" >> "$GITHUB_ENV"
+
+      - name: Prepare mod
+        run: |
+          test -f bearite/sdk/build-mod.sh
+          test -f bearite/sdk/bearite_api.h
+          test -f bearite/sdk/bearite_il2cpp.h
+          mkdir -p bearite/sdk/mods
+          cp -a project/sdk/mods/editor-all bearite/sdk/mods/
+
+      - name: Build EDITOR ALL (arm64-v8a)
+        run: |
+          cd bearite/sdk
+          bash build-mod.sh mods/editor-all ../../dist
+
+      - name: Upload mod ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: editor-all
+          path: dist/editor-all.zip
+          if-no-files-found: error
