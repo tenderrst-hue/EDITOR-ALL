@@ -1,0 +1,37 @@
+{
+  "id": "editor-all",
+  "name": "EDITOR ALL",
+  "version": "0.1",
+  "author": "я",
+  "description": "Редактор объектов игры: листайте спрайты/3D/UI кнопками на экране, выбранный мигает. Можно покрасить, скрыть, заменить картинку, показать скрытый UI, сохранить и сбросить. Подробности в логе.",
+  "libs": ["libs/arm64-v8a/libeditorall.so"],
+  "settings": [
+    { "id": "ed_on", "type": "bool", "name": "Редактор включён", "default": false },
+    { "id": "list", "type": "choice", "name": "Что листаем", "options": ["3D и спрайты", "UI"], "default": "3D и спрайты" },
+    { "id": "filter", "type": "string", "name": "Поиск по имени", "description": "Часть имени объекта или картинки. Пусто = всё", "default": "" },
+    { "id": "sel", "type": "int", "name": "Номер объекта", "min": 0, "max": 3999, "default": 0, "control": "slider" },
+    { "id": "act", "type": "choice", "name": "Действие", "options": ["Подсветка", "Цвет", "Скрыть", "Показать", "Заменить", "Сбросить этот", "Список в лог"], "default": "Подсветка" },
+    { "id": "run", "type": "bool", "name": "Выполнить действие", "description": "Каждое переключение выполняет выбранное действие", "default": false },
+    { "id": "tint_r", "type": "float", "name": "Цвет: красный", "min": 0, "max": 1, "default": 1, "control": "slider" },
+    { "id": "tint_g", "type": "float", "name": "Цвет: зелёный", "min": 0, "max": 1, "default": 1, "control": "slider" },
+    { "id": "tint_b", "type": "float", "name": "Цвет: синий", "min": 0, "max": 1, "default": 1, "control": "slider" },
+    { "id": "tint_a", "type": "float", "name": "Цвет: прозрачность", "min": 0, "max": 1, "default": 1, "control": "slider" },
+    { "id": "src_name", "type": "string", "name": "Заменить на (имя картинки)", "description": "Имя любого загруженного спрайта или текстуры игры. Имена видно в логе", "default": "" },
+    { "id": "reveal_ui", "type": "bool", "name": "Показать скрытый UI", "description": "Включает все выключенные элементы интерфейса", "default": false },
+    { "id": "save", "type": "bool", "name": "Сохранить правки", "description": "Переключите, чтобы записать правки в файл. Они применятся при следующем запуске", "default": false },
+    { "id": "reset_all", "type": "bool", "name": "Сбросить всё", "description": "Возвращает всё как было и удаляет сохранённые правки", "default": false }
+  ],
+  "hud": [
+    { "label": "Ред.", "setting": "ed_on", "action": "toggle", "pos": "left" },
+    { "label": "◀10", "setting": "sel", "action": "step", "step": -10, "pos": "left" },
+    { "label": "◀", "setting": "sel", "action": "step", "step": -1, "pos": "left" },
+    { "label": "▶", "setting": "sel", "action": "step", "step": 1, "pos": "left" },
+    { "label": "10▶", "setting": "sel", "action": "step", "step": 10, "pos": "left" },
+    { "label": "Список", "setting": "list", "action": "cycle", "pos": "right" },
+    { "label": "Действие", "setting": "act", "action": "cycle", "pos": "right" },
+    { "label": "OK", "setting": "run", "action": "toggle", "pos": "right" },
+    { "label": "UI+", "setting": "reveal_ui", "action": "toggle", "pos": "right" },
+    { "label": "Save", "setting": "save", "action": "toggle", "pos": "right" },
+    { "label": "Сброс", "setting": "reset_all", "action": "toggle", "pos": "right" }
+  ]
+}
