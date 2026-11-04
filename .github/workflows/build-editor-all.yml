@@ -30,10 +30,6 @@ jobs:
           "$SDKM" "ndk;26.1.10909125"
           echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/26.1.10909125" >> "$GITHUB_ENV"
 
-      - name: Restore v0.2 C source from compressed repository file
-        run: |
-          base64 -d project/sdk/mods/editor-all/src/mod.c.gz.b64 | gzip -d > project/sdk/mods/editor-all/src/mod.c
-
       - name: Prepare mod
         run: |
           test -f bearite/sdk/build-mod.sh
